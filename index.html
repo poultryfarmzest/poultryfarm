@@ -8,19 +8,15 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <!-- FontAwesome იკონებისთვის -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+  
   <style>
-    /* ფერთა პალიტრა (ლოგოს ფერებიდან გამომდინარე) */
+    /* CSS ცვლადები ლოგოდან და სურათებიდან */
     :root {
       --primary: #f26522;       /* ნარინჯისფერი */
       --primary-dark: #d9530f;  /* მუქი ნარინჯისფერი */
       --accent: #5d3215;         /* ყავისფერი */
-      --bg-light: #faf6f0;       /* თბილი კრემისფერი ფონი */
-      --card-bg: #ffffff;
-      --text-main: #332219;      /* ტექსტის ფერი */
-      --text-sub: #6e645e;
+      --text-main: #332219;
+      --card-bg: rgba(255, 255, 255, 0.95); /* გამჭვირვალე თეთრი ბარათებისთვის */
     }
 
     * {
@@ -31,19 +27,25 @@
     }
 
     body {
-      background-color: var(--bg-light);
       color: var(--text-main);
       display: flex;
       flex-direction: column;
       min-height: 100vh;
+      
+      /* --- მთავარი ბეგრაუნდის პარამეტრები --- */
+      background-image: url('background.jpg'); /* დარწმუნდით, რომ ფაილს background.jpg ჰქვია */
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed; /* ბეგრაუნდი არ მოძრაობს სკროლისას */
+      background-repeat: no-repeat;
     }
 
     /* ჰედერი და ლოგო */
     header {
-      background-color: #ffffff;
+      background-color: rgba(255, 255, 255, 0.9); /* ოდნავ გამჭვირვალე თეთრი ჰედერი */
       padding: 20px 15px;
       text-align: center;
-      box-shadow: 0 4px 15px rgba(93, 50, 21, 0.08);
+      box-shadow: 0 4px 15px rgba(93, 50, 21, 0.1);
       border-bottom: 3px solid var(--primary);
     }
 
@@ -60,11 +62,6 @@
       height: 110px;
       width: auto;
       object-fit: contain;
-      transition: transform 0.3s ease;
-    }
-
-    .logo-img:hover {
-      transform: scale(1.03);
     }
 
     header h1 {
@@ -76,7 +73,7 @@
 
     header p {
       font-size: 0.95rem;
-      color: var(--text-sub);
+      color: #6e645e;
     }
 
     /* მთავარი კონტეინერი */
@@ -94,66 +91,52 @@
       gap: 25px;
     }
 
-    /* ბარათების (ბოქსების) სტილები */
+    /* --- ბარათების (ბოქსების) ახალი სტილი სურათებით --- */
     .card {
       background: var(--card-bg);
       border-radius: 16px;
-      padding: 30px 25px;
-      text-align: center;
       text-decoration: none;
       color: var(--text-main);
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
       border: 2px solid #f0e6dd;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
       transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 5px;
-      background: var(--primary);
-      opacity: 0;
-      transition: opacity 0.3s ease;
+      overflow: hidden; /* აუცილებელია, რომ სურათი არ გამოვიდეს კუთხეებიდან */
     }
 
     .card:hover {
       transform: translateY(-8px);
-      box-shadow: 0 15px 30px rgba(242, 101, 34, 0.15);
-      border-color: rgba(242, 101, 34, 0.3);
+      box-shadow: 0 15px 30px rgba(242, 101, 34, 0.2);
+      border-color: rgba(242, 101, 34, 0.4);
     }
 
-    .card:hover::before {
-      opacity: 1;
+    /* ბარათის სურათის კონტეინერი */
+    .card-image {
+      width: 100%;
+      height: 180px; /* სურათის სიმაღლე ბარათში */
+      overflow: hidden;
     }
 
-    /* იკონების სტილი */
-    .icon-box {
-      width: 70px;
-      height: 70px;
-      background-color: #fdf2ea;
-      color: var(--primary);
-      border-radius: 50%;
+    .card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* სურათი ავსებს კონტეინერს პროპორციულად */
+      transition: transform 0.3s ease; /* ჰოვერზე ზუმის ეფექტი */
+    }
+
+    .card:hover .card-image img {
+      transform: scale(1.05); /* ოდნავი ზუმი ჰოვერზე */
+    }
+
+    /* ბარათის ტექსტის ნაწილი */
+    .card-content {
+      padding: 25px;
+      text-align: center;
+      flex: 1;
       display: flex;
-      align-items: center;
+      flex-direction: column;
       justify-content: center;
-      font-size: 1.8rem;
-      margin-bottom: 20px;
-      transition: all 0.3s ease;
-    }
-
-    .card:hover .icon-box {
-      background-color: var(--primary);
-      color: #ffffff;
-      transform: scale(1.1);
     }
 
     .card h3 {
@@ -165,11 +148,11 @@
 
     .card p {
       font-size: 0.88rem;
-      color: var(--text-sub);
+      color: #6e645e;
       line-height: 1.4;
     }
 
-    /* ფუტერი (ქვედა ნაწილი) */
+    /* ფუტერი */
     footer {
       background-color: var(--accent);
       color: #f5ebe6;
@@ -179,29 +162,22 @@
       font-size: 0.85rem;
     }
 
-    /* რესპონსიულობა მობილურებისთვის */
+    /* რესპონსიულობა */
     @media (max-width: 600px) {
-      header {
-        padding: 15px 10px;
-      }
-      .logo-img {
-        height: 90px;
-      }
-      header h1 {
-        font-size: 1.4rem;
-      }
-      main {
-        margin: 20px auto;
-      }
+      header { padding: 15px 10px; }
+      .logo-img { height: 90px; }
+      header h1 { font-size: 1.4rem; }
+      main { margin: 20px auto; }
+      .card-image { height: 160px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ჰედერი -->
+  <!-- ჰედერი ლოგოთი -->
   <header>
     <div class="header-content">
-      <!-- დარწმუნდით, რომ ლოგოს ფაილი ატვირთულია GitHub-ზე სახელით logo.jpg -->
+      <!-- დარწმუნდით, რომ ლოგოს ფაილი ატვირთულია GitHub-ზე -->
       <img src="logo.jpg" alt="ზესტაფონის მეფრინველეობა" class="logo-img" onerror="this.style.display='none'">
       <div>
         <h1>ზესტაფონის მეფრინველეობა</h1>
@@ -210,62 +186,74 @@
     </div>
   </header>
 
-  <!-- მთავარი ბლოკი - 6 ბოქსი -->
+  <!-- მთავარი ბლოკი - 6 ბოქსი სურათებით -->
   <main>
     <div class="grid-container">
 
       <!-- 1. ლიტერატურა -->
       <a href="#" class="card">
-        <div class="icon-box">
-          <i class="fa-solid fa-book-open"></i>
+        <div class="card-image">
+          <img src="card_literature.jpg" alt="ლიტერატურა">
         </div>
-        <h3>ლიტერატურა</h3>
-        <p>სახელმძღვანელოები და მეთოდოლოგია</p>
+        <div class="card-content">
+          <h3>ლიტერატურა</h3>
+          <p>სახელმძღვანელოები და მეთოდოლოგია</p>
+        </div>
       </a>
 
-      <!-- 2. ვეტერინარული ჩანაწერები (Google Sheets ლინკით) -->
+      <!-- 2. ვეტერინარული ჩანაწერები -->
       <a href="https://docs.google.com/spreadsheets/d/1SdHMSkR5GOZcaHcZZbto3hF8JSltUxo0Eso22jUc1uI/edit?usp=drive_link" target="_blank" class="card">
-        <div class="icon-box">
-          <i class="fa-solid fa-notes-medical"></i>
+        <div class="card-image">
+          <img src="card_vet_records.jpg" alt="ვეტერინარული ჩანაწერები">
         </div>
-        <h3>ვეტერინარული ჩანაწერები</h3>
-        <p>ვაქცინაცია და ჯანმრთელობის აღრიცხვა</p>
+        <div class="card-content">
+          <h3>ვეტერინარული ჩანაწერები</h3>
+          <p>ვაქცინაცია და ჯანმრთელობის აღრიცხვა</p>
+        </div>
       </a>
 
       <!-- 3. პროდუქტიულობა -->
       <a href="#" class="card">
-        <div class="icon-box">
-          <i class="fa-solid fa-chart-line"></i>
+        <div class="card-image">
+          <img src="card_productivity.jpg" alt="პროდუქტიულობა">
         </div>
-        <h3>პროდუქტიულობა</h3>
-        <p>წარმოების სტატისტიკა და ანალიტიკა</p>
+        <div class="card-content">
+          <h3>პროდუქტიულობა</h3>
+          <p>წარმოების სტატისტიკა და ანალიტიკა</p>
+        </div>
       </a>
 
       <!-- 4. კვება -->
       <a href="#" class="card">
-        <div class="icon-box">
-          <i class="fa-solid fa-wheat-awn"></i>
+        <div class="card-image">
+          <img src="card_nutrition.jpg" alt="კვება">
         </div>
-        <h3>კვება</h3>
-        <p>რაციონი, საკვების ხარჯი და განრიგი</p>
+        <div class="card-content">
+          <h3>კვება</h3>
+          <p>რაციონი, საკვების ხარჯი და განრიგი</p>
+        </div>
       </a>
 
       <!-- 5. გალერია -->
       <a href="#" class="card">
-        <div class="icon-box">
-          <i class="fa-solid fa-images"></i>
+        <div class="card-image">
+          <img src="card_gallery.jpg" alt="გალერია">
         </div>
-        <h3>გალერია</h3>
-        <p>ფოტო და ვიდეო მასალა ფერმიდან</p>
+        <div class="card-content">
+          <h3>გალერია</h3>
+          <p>ფოტო და ვიდეო მასალა ფერმიდან</p>
+        </div>
       </a>
 
       <!-- 6. მოვლა და მართვა -->
       <a href="#" class="card">
-        <div class="icon-box">
-          <i class="fa-solid fa-clipboard-check"></i>
+        <div class="card-image">
+          <img src="card_management.jpg" alt="მოვლა და მართვა">
         </div>
-        <h3>მოვლა და მართვა</h3>
-        <p>ყოველდღიური დავალებები და კონტროლი</p>
+        <div class="card-content">
+          <h3>მოვლა და მართვა</h3>
+          <p>ყოველდღიური დავალებები და კონტროლი</p>
+        </div>
       </a>
 
     </div>
